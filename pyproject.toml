@@ -1,0 +1,14 @@
+[project]
+name = "matryoshka-embedding"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "einops>=0.8.1",
+    "python-dotenv>=1.1.0",
+    "qdrant-client>=1.14.2",
+    "structlog>=25.3.0",
+    "torch>=2.7.0",
+    "transformers>=4.51.3",
+]
