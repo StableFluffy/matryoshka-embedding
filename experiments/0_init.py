@@ -1,7 +1,6 @@
-from core.db.qdrant_client import qdrant_client
+from core.db import qdrant_client
+from core.embedding import jina_client, JinaTask
 from qdrant_client.models import Distance, VectorParams
-
-from transformers import AutoModel
 
 
 async def init_qdrant() -> bool:
@@ -15,10 +14,6 @@ async def init_qdrant() -> bool:
 
 
 async def init_jina_embed() -> bool:
-    model = AutoModel.from_pretrained(
-        "jinaai/jina-embeddings-v3", trust_remote_code=True
-    )
-
     texts = [
         "Follow the white rabbit.",
         "Sigue al conejo blanco.",
@@ -26,14 +21,16 @@ async def init_jina_embed() -> bool:
         "跟着白兔走。",
         "اتبع الأرنب الأبيض.",
         "Folge dem weißen Kaninchen.",
-        "귀엽고 넙죽한 반달돌칼 마스코트",
         "KAIST's Official mascot is NUBZUK",
     ]
 
-    embeddings = model.encode(texts, task="text-matching")
-    similarities = [emb @ embeddings[-1].T for emb in embeddings[:-1]]
+    query = "귀엽고 넙죽한 반달돌칼 마스코트"
 
-    assert similarities.index(max(similarities)) == 6
+    result = jina_client.find_similar_texts(
+        query, texts, task=[JinaTask.RETRIEVAL_QUERY, JinaTask.RETRIEVAL_PASSAGE]
+    )
+
+    assert result["index"] == [6, 3, 4, 0, 2, 1, 5]
 
     return True
 
