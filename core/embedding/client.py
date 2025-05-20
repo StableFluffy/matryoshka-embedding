@@ -22,13 +22,20 @@ class JinaEmbed:
         return self.model.encode(texts, task=task)
 
     def find_similar_texts(
-        self, query: str, texts: list[str], task: list[JinaTask], top_k: int = None
+        self,
+        query: str,
+        texts: list[str],
+        task: list[JinaTask],
+        top_k: int = None,
+        matryoshka_dim: int = 1024,
     ) -> dict:
-        query_embedding = self.encode([query], task=task[0])
+        query_embedding = self.encode([query], task=task[0])[0][:matryoshka_dim]
+
         text_embeddings = self.encode(texts, task=task[1])
 
         similarities = [
-            float(np.dot(text_emb, query_embedding[0])) for text_emb in text_embeddings
+            float(np.dot(text_emb[:matryoshka_dim], query_embedding))
+            for text_emb in text_embeddings
         ]
 
         results = [(i, sim, texts[i]) for i, sim in enumerate(similarities)]

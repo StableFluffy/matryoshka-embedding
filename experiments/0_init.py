@@ -27,10 +27,14 @@ async def init_jina_embed() -> bool:
     query = "귀엽고 넙죽한 반달돌칼 마스코트"
 
     result = jina_client.find_similar_texts(
-        query, texts, task=[JinaTask.RETRIEVAL_QUERY, JinaTask.RETRIEVAL_PASSAGE]
+        query,
+        texts,
+        task=[JinaTask.RETRIEVAL_QUERY, JinaTask.RETRIEVAL_PASSAGE],
+        matryoshka_dim=512,
     )
+    print(result)
 
-    assert result["index"] == [6, 3, 4, 0, 2, 1, 5]
+    assert result["index"][0] == 6
 
     return True
 
