@@ -7,7 +7,7 @@ async def init_qdrant() -> bool:
     if not await qdrant_client.collection_exists("jina_embed_1024"):
         await qdrant_client.create_collection(
             collection_name="jina_embed_1024",
-            vectors_config=VectorParams(size=768, distance=Distance.COSINE),
+            vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
         )
 
     return True
