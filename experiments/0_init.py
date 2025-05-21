@@ -9,13 +9,13 @@ async def init_qdrant() -> bool:
             collection_name="jina_embed_1024",
             vectors_config=VectorParams(size=1024, distance=Distance.COSINE),
         )
-    
+
     if not await qdrant_client.collection_exists("jina_embed_512"):
         await qdrant_client.create_collection(
             collection_name="jina_embed_512",
             vectors_config=VectorParams(size=512, distance=Distance.COSINE),
         )
-    
+
     if not await qdrant_client.collection_exists("jina_embed_128"):
         await qdrant_client.create_collection(
             collection_name="jina_embed_128",

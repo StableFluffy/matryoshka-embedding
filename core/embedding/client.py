@@ -16,7 +16,7 @@ class JinaEmbed:
         self.model = AutoModel.from_pretrained(
             model_name,
             trust_remote_code=True,
-            device_map="mps", # apple silicon
+            device_map="mps",  # apple silicon
         )
 
     def encode(self, texts: list[str], task: JinaTask) -> list:
